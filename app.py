@@ -1,8 +1,16 @@
 """Frndo Webmail – launcher and CLI interface.
 
 Usage examples:
-    # Launch the web UI (default)
+    # Launch the default UI (PyQt6)
     python app.py
+
+    # Launch with a specific UI framework
+    python app.py --ui gradio
+    python app.py --ui react
+    python app.py --ui pyqt6
+
+    # Launch UI with options
+    python app.py --ui react ui --port 8080
 
     # Save credentials
     python app.py creds --user you@gmail.com --pass "xxxx xxxx xxxx xxxx"
@@ -28,9 +36,10 @@ import mailer
 def cmd_ui(args: argparse.Namespace) -> None:
     import ui
 
-    ui.build_ui().launch(
-        inbrowser=not args.no_browser,
-        server_port=args.port,
+    ui.launch(
+        framework=args.ui_framework,
+        port=getattr(args, "port", 7860),
+        no_browser=getattr(args, "no_browser", False),
     )
 
 
@@ -112,10 +121,17 @@ def main() -> None:
     parser = argparse.ArgumentParser(
         description="Frndo Webmail – send HTML emails via Gmail"
     )
+    parser.add_argument(
+        "--ui",
+        choices=["gradio", "react", "pyqt6"],
+        default="pyqt6",
+        dest="ui_framework",
+        help="UI framework to use (default: pyqt6)",
+    )
     sub = parser.add_subparsers(dest="command")
 
     # ── ui (default) ──────────────────────────────────────────────────────
-    p_ui = sub.add_parser("ui", help="Launch the web UI")
+    p_ui = sub.add_parser("ui", help="Launch the UI")
     p_ui.add_argument("--port", type=int, default=7860)
     p_ui.add_argument("--no-browser", action="store_true")
 
@@ -159,9 +175,6 @@ def main() -> None:
     }
 
     if args.command is None:
-        # Default: launch the UI
-        args.port = 7860
-        args.no_browser = False
         cmd_ui(args)
     else:
         dispatch[args.command](args)
