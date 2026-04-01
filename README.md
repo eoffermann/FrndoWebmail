@@ -1,6 +1,6 @@
 # Frndo Webmail
 
-A lightweight tool for sending HTML emails via Gmail, built with [Gradio](https://gradio.app). Supports managed email lists, BCC group sends, and both a web UI and full CLI.
+A lightweight tool for sending HTML emails via Gmail. Supports managed email lists, BCC group sends, and three UI options: PyQt6 (desktop), React (web), and Gradio (web).
 
 ## Setup
 
@@ -8,18 +8,37 @@ A lightweight tool for sending HTML emails via Gmail, built with [Gradio](https:
 pip install -r requirements.txt
 ```
 
-You'll need a [Gmail App Password](https://support.google.com/accounts/answer/185833) (not your regular Gmail password).
-
-## Web UI
+For the React UI, the frontend is pre-built — no Node.js required. To modify the React frontend, install Node.js and run:
 
 ```bash
-python app.py
+cd react_frontend && npm install && npm run build
 ```
 
-Opens a browser with two tabs:
+You'll need a [Gmail App Password](https://support.google.com/accounts/answer/185833) (not your regular Gmail password).
 
-- **Send** — Upload an HTML email, pick recipients (from a saved list or manually), preview, and send.
-- **Config** — Save Gmail credentials and manage email lists.
+## UI
+
+```bash
+# Launch the default UI (PyQt6 desktop app)
+python app.py
+
+# Choose a specific UI framework
+python app.py --ui pyqt6    # Native desktop app (default)
+python app.py --ui react    # Modern web app on port 7860
+python app.py --ui gradio   # Gradio web app on port 7860
+
+# Web UIs accept port and browser options
+python app.py --ui react ui --port 8080 --no-browser
+```
+
+### PyQt6 (default)
+Native desktop application with dark/light theme toggle and a settings modal dialog.
+
+### React
+Modern single-page web app with dark/light theme toggle. Settings slides in as a drawer panel from the right.
+
+### Gradio
+Two-tab web interface — Send and Config. The original UI.
 
 ## CLI
 
@@ -45,12 +64,16 @@ Emails are sent as a single message with all recipients BCC'd.
 
 ## Project Structure
 
-| File | Purpose |
-|------|---------|
-| `app.py` | Entry point — argparse CLI and web UI launcher |
+| File / Directory | Purpose |
+|------------------|---------|
+| `app.py` | Entry point — argparse CLI and UI launcher |
 | `config.py` | Credentials and email list management |
 | `mailer.py` | Email parsing and SMTP sending |
-| `ui.py` | Gradio web interface |
+| `ui/` | UI implementations |
+| `ui/gradio_ui.py` | Gradio web interface |
+| `ui/pyqt6_ui.py` | PyQt6 desktop interface |
+| `ui/react_api.py` | FastAPI backend for React UI |
+| `react_frontend/` | React + TypeScript SPA (Vite) |
 
 ## Recipient Format
 

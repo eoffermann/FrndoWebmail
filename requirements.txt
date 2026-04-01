@@ -26,7 +26,7 @@ MarkupSafe==3.0.3
 mdurl==0.1.2
 numpy==2.2.6
 orjson==3.11.7
-packaging @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_packaging_1769093650/work
+packaging
 pandas==2.3.3
 pillow==12.1.1
 pydantic==2.12.5
@@ -50,3 +50,5 @@ typing-inspection==0.4.2
 typing_extensions==4.15.0
 tzdata==2025.3
 uvicorn==0.42.0
+PyQt6>=6.7.0
+PyQt6-WebEngine>=6.7.0
