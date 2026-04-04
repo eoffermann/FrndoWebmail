@@ -1,4 +1,4 @@
-# Frndo Webmail
+# B2C Webmail
 
 A lightweight tool for sending HTML emails via Gmail. Supports managed email lists, BCC group sends, and three UI options: PyQt6 (desktop), React (web), and Gradio (web).
 
